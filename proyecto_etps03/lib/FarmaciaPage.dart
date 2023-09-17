@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:proyecto_etps03/MapaPage.dart';
+import 'package:proyecto_etps03/map_page.dart';
 
 class FarmaciaPage extends StatelessWidget {
   @override
@@ -84,7 +84,7 @@ class FarmaciaPage extends StatelessWidget {
                     // Navegar a la página del mapa cuando se toca una carta
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => MapaPage()), // Asegúrate de importar MapaPage
+                      MaterialPageRoute(builder: (context) => MapPage()), // Asegúrate de importar MapaPage
                     );
                   },
                   child: Card(
@@ -101,7 +101,7 @@ class FarmaciaPage extends StatelessWidget {
                     // Navegar a la página del mapa cuando se toca una carta
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => MapaPage()), // Asegúrate de importar MapaPage
+                      MaterialPageRoute(builder: (context) => MapPage()), // Asegúrate de importar MapaPage
                     );
                   },
                   child: Card(
