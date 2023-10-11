@@ -2,9 +2,17 @@ import 'package:flutter/material.dart';
 import 'registration_page.dart';
 import 'FarmaciaPage.dart';
 
-void main() {
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(MyApp());
 }
+
 
 class MyApp extends StatelessWidget {
   @override
@@ -90,6 +98,31 @@ class LoginPage extends StatelessWidget {
                     );
                   },
                   child: Text('Agregar nuevo usuario'),
+                ),
+                ElevatedButton(
+                  onPressed: () async {
+                    try {
+                      final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+                      final GoogleSignInAuthentication googleAuth = await googleUser!.authentication;
+                      final AuthCredential credential = GoogleAuthProvider.credential(
+                        accessToken: googleAuth.accessToken,
+                        idToken: googleAuth.idToken,
+                      );
+                      final UserCredential authResult = await FirebaseAuth.instance.signInWithCredential(credential);
+                      final User? user = authResult.user;
+
+                      if (user != null) {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => FarmaciaPage()),
+                        );
+                      }
+                    } catch (error) {
+                      // Manejar errores de autenticación aquí
+                      print('Error de autenticación: $error');
+                    }
+                  },
+                  child: Text('Iniciar Sesión con Google'),
                 ),
               ],
             ),
