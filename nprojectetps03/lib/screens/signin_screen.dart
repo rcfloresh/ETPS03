@@ -83,8 +83,8 @@ class _SignInScreenState extends State<SignInScreen> {
                       children: [
                         Image.asset(
                           "assets/images/google.png",
-                          height: 40,
-                          width: 40,
+                          height: 30,
+                          width: 30,
                         ),
                         SizedBox(
                           width: 10,
