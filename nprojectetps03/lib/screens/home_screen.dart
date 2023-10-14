@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../screens/signin_screen.dart';
+import '../screens/pharmacy_screen.dart';
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -15,24 +16,6 @@ class _HomeScreenState extends State<HomeScreen> {
   String? _selectedDepartment;
   String? _selectedMunicipality;
 
-  // Lista de departamentos de El Salvador
-  final List<String> departments = [
-    'Ahuachapan',
-    'Cabañas',
-    'Chalatenango',
-    'Cuscatlan',
-    'La Libertad',
-    'La Paz',
-    'La Union',
-    'Morazán',
-    'San Miguel',
-    'San Salvador',
-    'San Vicente',
-    'Santa Ana',
-    'Sonsonate',
-    'Usulutan'
-  ];
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -46,20 +29,27 @@ class _HomeScreenState extends State<HomeScreen> {
                 labelText: 'Medicamento',
               ),
             ),
-            DropdownButton<String>(
-              hint: Text('Selecciona un departamento'),
-              value: _selectedDepartment,
-              items: departments.map((String value) {
-                return DropdownMenuItem<String>(
-                  value: value,
-                  child: Text(value),
+            StreamBuilder<QuerySnapshot>(
+              stream: FirebaseFirestore.instance.collection('deptMuni').snapshots(),
+              builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                if (!snapshot.hasData) return const Text('Cargando...');
+                final departments = snapshot.data!.docs.map((doc) => doc.id).toList();
+                return DropdownButton<String>(
+                  hint: Text('Selecciona un departamento'),
+                  value: _selectedDepartment,
+                  items: departments.map((String value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Text(value),
+                    );
+                  }).toList(),
+                  onChanged: (String? newValue) {
+                    setState(() {
+                      _selectedDepartment = newValue;
+                      _selectedMunicipality = null;
+                    });
+                  },
                 );
-              }).toList(),
-              onChanged: (String? newValue) {
-                setState(() {
-                  _selectedDepartment = newValue;
-                  _selectedMunicipality = null;
-                });
               },
             ),
             StreamBuilder<DocumentSnapshot>(
@@ -87,9 +77,13 @@ class _HomeScreenState extends State<HomeScreen> {
             ElevatedButton(
               child: Text("Buscar"),
               onPressed: () {
-                // Implementa la funcionalidad de búsqueda aquí
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => PharmacyScreen(medicineName: _medicineController.text)),
+                );
               },
             ),
+
             ElevatedButton(
               child: Text("Logout"),
               onPressed: () {
