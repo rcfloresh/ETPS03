@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../screens/signin_screen.dart';
+import '../screens/map_page.dart';
 import 'package:flutter/material.dart';
 
 class PharmacyScreen extends StatelessWidget {
@@ -46,8 +47,16 @@ class PharmacyScreen extends StatelessWidget {
                   if (!snapshot.hasData) return const Text('Cargando...');
                   final pharmacyData = snapshot.data!;
                   if (pharmacyData.get('Departamento') == department && pharmacyData.get('Municipio') == municipality) {
-                    return ListTile(
-                      title: Text(pharmacies[index]),
+                    return GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => MapPage(pharmacyName: pharmacies[index])),
+                        );
+                      },
+                      child: ListTile(
+                        title: Text(pharmacies[index]),
+                      ),
                     );
                   } else {
                     return Container();  // No mostrar nada si la farmacia no pertenece al departamento y municipio seleccionados
