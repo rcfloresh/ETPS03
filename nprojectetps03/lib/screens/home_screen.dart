@@ -50,6 +50,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         if (!snapshot.hasData) return const Text('Cargando...');
                         _medicineList = snapshot.data!.docs.map((doc) => doc.id).toList();
                         return Autocomplete<String>(
+
                           optionsBuilder: (TextEditingValue textEditingValue) {
                             if (textEditingValue.text == '') {
                               return const Iterable<String>.empty();
@@ -61,6 +62,30 @@ class _HomeScreenState extends State<HomeScreen> {
                           onSelected: (String selection) {
                             _medicineController.text = selection;
                           },
+
+                          // Start Style
+                          fieldViewBuilder: (context, Controller, focusNode, onFieldSubmitted){
+                            return TextFormField(
+                              controller: Controller,
+                              focusNode: focusNode,
+                           //   onFieldSubmitted: onFieldSubmitted,
+                              decoration: InputDecoration(
+                                filled: true,
+                                fillColor: Colors.white,
+                                border: OutlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.black), // Borde enfocado negro
+                                  borderRadius: BorderRadius.circular(10.0),
+                                ),
+                                hintText: 'Ingrese un medicamento'
+                              ),
+                            );
+                          },
+
+
+                          // End Style
+
+
+
                         );
                       },
                     ),
@@ -87,9 +112,32 @@ class _HomeScreenState extends State<HomeScreen> {
                               _selectedMunicipality = null;
                             });
                           },
+                          // Start Style
+
+                        style: TextStyle(color: Colors.black), // Color del texto negro
+                        icon: Icon(Icons.arrow_drop_down), // Icono de flecha
+                        underline: Container(  // Borde inferior
+                        height: 2,
+                        color: Colors.black, // Color del borde inferior
+                        ),
+
+                        decoration: InputDecoration(
+                        filled: true,
+                        fillColor: Colors.white,
+                        border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10.0),
+                        )
+                        ),
+
+                          // End Style
                         );
                       },
                     ),
+
+
+
+
+
                     const SizedBox(
                       height: 20,
                     ),
