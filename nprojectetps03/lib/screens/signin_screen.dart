@@ -57,7 +57,7 @@ class _SignInScreenState extends State<SignInScreen> {
                       password: _passwordTextController.text)
                       .then((value) {
                     Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => HomeScreen()));
+                        MaterialPageRoute(builder: (context) => HomeScreen(userEmail: _emailTextController.text)));
                   }).onError((error, stackTrace) {
                     print("Error ${error.toString()}");
                   });
@@ -65,9 +65,9 @@ class _SignInScreenState extends State<SignInScreen> {
                 // Login con Google
                 ElevatedButton(
                   onPressed: () async {
-                    await FirebaseServices().signInWithGoogle();
+                    String userEmail = await FirebaseServices().signInWithGoogle();  // Guarda el correo del usuario en una variable
                     Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => HomeScreen()));
+                        MaterialPageRoute(builder: (context) => HomeScreen(userEmail: userEmail)));  // Pasa el correo del usuario a HomeScreen
                   },
                   style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.resolveWith((states) {

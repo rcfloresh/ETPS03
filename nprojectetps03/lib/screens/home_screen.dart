@@ -4,7 +4,9 @@ import '../utils/color_utils.dart';
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+  final String userEmail;  // Añade el correo del usuario como un parámetro
+
+  const HomeScreen({Key? key, required this.userEmail}) : super(key: key);  // Incluye el correo del usuario en el constructor
 
   @override
   _HomeScreenState createState() => _HomeScreenState();
@@ -72,26 +74,28 @@ class _HomeScreenState extends State<HomeScreen> {
                         onSelected: (String selection) {
                           _medicineController.text = selection;
                         },
-
                         // Start Style
                         fieldViewBuilder:
                             (context, Controller, focusNode, onFieldSubmitted) {
+                          Controller.text = _medicineController.text;
                           return TextFormField(
                             controller: Controller,
                             focusNode: focusNode,
-                            //   onFieldSubmitted: onFieldSubmitted,
+                            onChanged: (value) {
+                              _medicineController.text = value;  // Actualiza _medicineController con el valor ingresado manualmente
+                            },
                             decoration: InputDecoration(
                               prefixIcon: Icon(
                                 Icons.local_pharmacy,
                                 color: Colors.white70,
                               ),
                               labelText:
-                                  "Ingrese el medicamento que desea consultar",
+                              "Ingrese el medicamento que desea consultar",
                               labelStyle: TextStyle(
                                   color: Colors.white.withOpacity(0.9)),
                               filled: true,
                               floatingLabelBehavior:
-                                  FloatingLabelBehavior.never,
+                              FloatingLabelBehavior.never,
                               fillColor: Colors.white.withOpacity(0.3),
                               border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(30.0),
@@ -104,6 +108,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       );
                     },
                   ),
+
+
                   const SizedBox(
                     height: 20,
                   ),
@@ -207,7 +213,8 @@ class _HomeScreenState extends State<HomeScreen> {
                             builder: (context) => PharmacyScreen(
                                 medicineName: _medicineController.text,
                                 department: _selectedDepartment!,
-                                municipality: _selectedMunicipality!)),
+                                municipality: _selectedMunicipality!,
+                              userName: widget.userEmail, )),
                       );
                     },
                   ),

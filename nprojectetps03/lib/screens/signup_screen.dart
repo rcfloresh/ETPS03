@@ -67,7 +67,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           .then((value) {
                         print("Crear una nueva cuenta");
                         Navigator.push(context,
-                            MaterialPageRoute(builder: (context) => HomeScreen()));
+                            MaterialPageRoute(builder: (context) => HomeScreen(userEmail: _emailTextController.text,)));
                       }).onError((error, stackTrace) {
                         print("Error ${error.toString()}");
                       });
