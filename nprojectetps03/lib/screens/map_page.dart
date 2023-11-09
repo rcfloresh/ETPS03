@@ -8,8 +8,8 @@ import 'package:permission_handler/permission_handler.dart';
 
 class MapPage extends StatelessWidget {
   final String pharmacyName;
-
-  MapPage({required this.pharmacyName});
+  final String userName;
+  MapPage({required this.pharmacyName, required this.userName});
 
   Future<LatLng> getCurrentLocation() async {
     if (await Permission.location.request().isGranted) {
@@ -95,7 +95,7 @@ class MapPage extends StatelessWidget {
                     onPressed: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => HomeScreen()),
+                        MaterialPageRoute(builder: (context) => HomeScreen(userEmail: userName,)),
                       );
                     },
                     child: Text('Ir a SearchPage'),
